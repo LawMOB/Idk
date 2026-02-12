@@ -86,16 +86,16 @@ body {
     transition: transform 0.3s ease;
     font-weight: bold;
 
-    outline: none; /* hilangkan outline biru */
-    -webkit-tap-highlight-color: transparent; /* hilangkan biru saat tap di mobile */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .popup button:focus {
-    outline: none; /* pastikan tidak muncul saat focus */
+    outline: none;
 }
 
 .popup button:active {
-    transform: scale(0.95); /* efek klik halus */
+    transform: scale(0.95);
 }
 
 
@@ -128,7 +128,6 @@ body {
     will-change:transform;
 }
 
-/* Animasi lebih smooth & natural */
 @keyframes fall{
     0%{
         transform: translateY(0) translateX(0) rotate(0deg) scale(0.9);
@@ -156,18 +155,39 @@ body {
         transform: translateY(110vh) translateX(15px) rotate(360deg);
         opacity:0.9;
     }
+  }
 
-    /* Responsive Mobile */
 @media (max-width: 480px){
 
-.gift-box{
-    padding: 20px;
-    border-radius: 15px;
-}
+    .gift-box{
+        padding: 18px !important;
+        border-radius: 14px !important;
+        transform: scale(0.8);
+    }
 
-.gift-box h2{
-    font-size: 1rem;
- }
+    .gift-box h2{
+        font-size: 0.95rem !important;
+    }
+
+    .popup{
+        width: 80% !important;
+        max-width: 260px !important;
+        padding: 18px !important;
+        border-radius: 18px !important;
+    }
+
+    .popup img{
+        width: 100px !important;
+    }
+
+    .popup h3{
+        font-size: 0.9rem !important;
+    }
+
+    .popup button{
+        padding: 8px 14px !important;
+        font-size: 0.8rem !important;
+    }
 }
 
 </style>
