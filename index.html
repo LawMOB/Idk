@@ -354,22 +354,27 @@ window.addEventListener("load", function(){
 
     function hideLoader(){
         loader.style.opacity = "0";
+
         setTimeout(()=>{
             loader.style.display = "none";
-        },600);
+        },600); // samakan dengan transition CSS
     }
 
-    // Coba langsung play
     music.play().then(()=>{
         hideLoader();
     }).catch(()=>{
-        // Kalau autoplay diblokir
         loader.querySelector(".loader-text").innerText = "TAP TO START";
 
         loader.addEventListener("click", function(){
+
             music.play();
-            hideLoader();
-        });
+
+            // kasih sedikit delay biar browser sempat register click
+            setTimeout(()=>{
+                hideLoader();
+            }, 100);
+
+        }, { once:true });
     });
 
 });
