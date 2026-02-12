@@ -23,6 +23,14 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body{
+    overscroll-behavior: none;
+}
+
+*{
+    -webkit-tap-highlight-color: transparent;
+}
+
 /* Gift box */
 .gift-box {
     text-align: center;
@@ -125,6 +133,7 @@ body {
     align-items:center;
     z-index:99999;
     flex-direction:column;
+    transition: opacity 0.5s ease;
 }
 
 .loader-content{
@@ -309,24 +318,6 @@ function showGift() {
 function closePopup() {
     document.getElementById('overlay').style.display = 'none';
 }
-</script>
-
-
-<script>
-function showGift() {
-    document.getElementById('overlay').style.display = 'flex';
-    document.getElementById('openSound').play();
-    startGiftRain();
-}
-
-function closePopup() {
-    document.getElementById('overlay').style.display = 'none';
-}
-
-/* Autoplay workaround for browser */
-window.addEventListener('click', function () {
-    document.getElementById('bgMusic').play();
-}, { once: true });
 </script>
 
 <script>
