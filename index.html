@@ -352,17 +352,17 @@ window.addEventListener("load", function(){
     const music = document.getElementById("bgMusic");
     const loader = document.getElementById("loader");
 
-    music.addEventListener("canplaythrough", function(){
+    music.addEventListener("loadeddata", function(){
 
         music.play().then(()=>{
 
             loader.style.opacity = "0";
             setTimeout(()=>{
                 loader.style.display = "none";
-            },500);
+            },600);
 
         }).catch(()=>{
-            loader.innerHTML = "<p>Tap anywhere to start</p>";
+            loader.querySelector(".loader-text").innerText = "TAP TO START";
             document.addEventListener("click", function(){
                 music.play();
                 loader.style.display="none";
