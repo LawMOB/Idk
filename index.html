@@ -150,13 +150,16 @@ html, body{
     animation: float 2s ease-in-out infinite;
 }
 
-.loader-text{
-    font-size:0.9rem;
-    letter-spacing:2px;
-    color:#ff8fa3;
-    font-weight:500;
-    opacity:0.8;
-    transition: opacity 0.5s ease;
+.loader-text {
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: #ff8fa3;
+    font-weight: 600;
+    transition: all 0.5s ease; /* Membuat perubahan teks jadi halus */
+}
+
+.blink {
+    animation: pulseAnim 1.5s ease-in-out infinite;
 }
 
 .fade-out{
@@ -173,9 +176,9 @@ html, body{
     animation: pulseAnim 1.5s ease-in-out infinite;
 }
 
-@keyframes pulseAnim{
-    0%,100%{ opacity:0.4; }
-    50%{ opacity:1; }
+@keyframes pulseAnim {
+    0%, 100% { opacity: 0.3; transform: scale(0.98); }
+    50% { opacity: 1; transform: scale(1); }
 }
 
 .spinner{
@@ -368,35 +371,39 @@ function closePopup() {
 
 <script>
 window.addEventListener("load", function(){
-
     const music = document.getElementById("bgMusic");
     const loader = document.getElementById("loader");
+    const loaderText = document.getElementById("loaderText");
+    const spinner = document.getElementById("spinner");
 
     function hideLoader(){
         loader.style.opacity = "0";
-
-        setTimeout(()=>{
-            loader.style.display = "none";
-        },600); // samakan dengan transition CSS
+        setTimeout(() => { 
+            loader.style.display = "none"; 
+        }, 800);
     }
 
-    music.play().then(()=>{
-        hideLoader();
-    }).catch(()=>{
-        loader.querySelector(".loader-text").innerText = "TAP TO START";
+    music.play().then(() => {
+        // Jika autoplay berhasil, langsung masuk
+        setTimeout(hideLoader, 1000);
+    }).catch(() => {
+        // JIKA GAGAL (Mobile):
+        // 1. Hilangkan spinner dulu agar smooth
+        spinner.style.opacity = "0";
+        
+        setTimeout(() => {
+            spinner.style.display = "none";
+            // 2. Ubah teks dan nyalakan efek kedap-kedip
+            loaderText.innerText = "TAP ANYWHERE TO START";
+            loaderText.classList.add("blink");
+        }, 400);
 
+        // 3. Pasang event listener di seluruh area loader
         loader.addEventListener("click", function(){
-
             music.play();
-
-            // kasih sedikit delay biar browser sempat register click
-            setTimeout(()=>{
-                hideLoader();
-            }, 100);
-
-        }, { once:true });
+            hideLoader();
+        }, { once: true });
     });
-
 });
 </script>
 
