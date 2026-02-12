@@ -352,16 +352,26 @@ window.addEventListener("load", function(){
     const music = document.getElementById("bgMusic");
     const loader = document.getElementById("loader");
 
-    music.play().catch(()=>{});
-
-    setTimeout(()=>{
+    function hideLoader(){
         loader.style.opacity = "0";
         setTimeout(()=>{
             loader.style.display = "none";
         },600);
-    }, 1500);
+    }
 
-});
+    // Coba langsung play
+    music.play().then(()=>{
+        hideLoader();
+    }).catch(()=>{
+        // Kalau autoplay diblokir
+        loader.querySelector(".loader-text").innerText = "TAP TO START";
+
+        loader.addEventListener("click", function(){
+            music.play();
+            hideLoader();
+        });
+    });
+
 });
 </script>
 
