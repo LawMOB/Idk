@@ -352,25 +352,16 @@ window.addEventListener("load", function(){
     const music = document.getElementById("bgMusic");
     const loader = document.getElementById("loader");
 
-    music.addEventListener("loadeddata", function(){
+    music.play().catch(()=>{});
 
-        music.play().then(()=>{
+    setTimeout(()=>{
+        loader.style.opacity = "0";
+        setTimeout(()=>{
+            loader.style.display = "none";
+        },600);
+    }, 1500);
 
-            loader.style.opacity = "0";
-            setTimeout(()=>{
-                loader.style.display = "none";
-            },600);
-
-        }).catch(()=>{
-            loader.querySelector(".loader-text").innerText = "TAP TO START";
-            document.addEventListener("click", function(){
-                music.play();
-                loader.style.display="none";
-            }, { once:true });
-        });
-
-    });
-
+});
 });
 </script>
 
