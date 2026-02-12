@@ -148,10 +148,11 @@ html, body{
     min-height: 200px; /* Menjaga tinggi box agar teks tidak melompat */
 }
 
-.loader-box img{
-    width:60px;
-    margin-bottom:20px;
+.loader-box img {
+    width: 60px;
+    margin-bottom: 20px;
     animation: float 2s ease-in-out infinite;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Tambahkan ini */
 }
 
 .loader-text {
@@ -198,10 +199,23 @@ html, body{
     border-top: 3px solid #ff8fa3;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
-    margin-bottom: 20px; /* Gunakan margin bottom bukan auto */
-    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s ease;
+    margin: 15px auto;
+    
+    /* Penyelamat transisi kaku */
+    max-height: 50px; 
+    opacity: 1;
+    transition: opacity 0.5s ease, max-height 0.6s ease, margin 0.6s ease, transform 0.5s ease;
+    overflow: hidden;
 }
 
+.spinner-gone {
+    opacity: 0 !important;
+    max-height: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    transform: scale(0);
+}
+    
 @keyframes spin{
     to{ transform:rotate(360deg); }
 }
@@ -397,33 +411,28 @@ window.addEventListener("load", function() {
     music.play().then(() => {
         setTimeout(hideLoader, 1000);
     }).catch(() => {
-        // TAHAP 1: Fade out spinner dan teks lama secara lembut
-        spinner.style.opacity = "0";
-        spinner.style.transform = "scale(0.8)"; // Efek mengecil saat hilang
+        // TAHAP 1: Spinner memudar dan menciut secara smooth
+        // Teks lama menghilang
+        spinner.classList.add("spinner-gone");
         loaderText.classList.add("hidden");
 
         setTimeout(() => {
-            // TAHAP 2: Hilangkan spinner dari layout agar teks bisa naik pelan
-            spinner.style.display = "none";
-            
-            // Ganti teks
+            // TAHAP 2: Ganti teks saat spinner sudah benar-benar ciut
             loaderText.innerText = "TAP ANYWHERE TO START";
             
-            // TAHAP 3: Fade in teks baru dengan posisi yang sudah stabil
+            // TAHAP 3: Munculkan teks baru
             loaderText.classList.remove("hidden");
             loaderText.classList.add("blink");
             
-            // Tambahkan sedikit gaya klik pada layar
             loader.style.cursor = "pointer";
-        }, 700); // Beri waktu transisi CSS selesai
+        }, 600); // Waktu yang pas dengan durasi transisi CSS
 
         loader.addEventListener("click", function() {
-            music.play();
+            music.play().catch(e => console.log("Audio play error"));
             hideLoader();
         }, { once: true });
     });
 });
-
 </script>
 
 </body>
