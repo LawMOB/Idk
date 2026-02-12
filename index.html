@@ -155,7 +155,12 @@ html, body{
     letter-spacing: 2px;
     color: #ff8fa3;
     font-weight: 600;
-    transition: all 0.5s ease; /* Membuat perubahan teks jadi halus */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Transisi halus */
+}
+
+.hidden {
+    opacity: 0 !important;
+    transform: translateY(-5px); /* Efek teks naik sedikit saat menghilang */
 }
 
 .blink {
@@ -187,6 +192,7 @@ html, body{
     border:3px solid rgba(255,143,163,0.2);
     border-top:3px solid #ff8fa3;
     border-radius:50%;
+    transition: opacity 0.5s ease;
     animation:spin 0.8s linear infinite;
     margin:15px auto;
 }
@@ -370,37 +376,45 @@ function closePopup() {
 </script>
 
 <script>
-window.addEventListener("load", function(){
+window.addEventListener("load", function() {
     const music = document.getElementById("bgMusic");
     const loader = document.getElementById("loader");
     const loaderText = document.getElementById("loaderText");
     const spinner = document.getElementById("spinner");
 
-    function hideLoader(){
+    // Fungsi untuk menutup seluruh layar loader
+    function hideLoader() {
         loader.style.opacity = "0";
-        setTimeout(() => { 
-            loader.style.display = "none"; 
-        }, 800);
+        setTimeout(() => {
+            loader.style.display = "none";
+        }, 800); // Durasi fade out loader utama
     }
 
+    // Mencoba memutar musik secara otomatis
     music.play().then(() => {
-        // Jika autoplay berhasil, langsung masuk
+        // Jika browser mengizinkan autoplay (biasanya di Desktop)
         setTimeout(hideLoader, 1000);
     }).catch(() => {
-        // JIKA GAGAL (Mobile):
-        // 1. Hilangkan spinner dulu agar smooth
-        spinner.style.opacity = "0";
+        // JIKA AUTOPLAY DIBLOKIR (Biasanya di Mobile):
         
-        setTimeout(() => {
-            spinner.style.display = "none";
-            // 2. Ubah teks dan nyalakan efek kedap-kedip
-            loaderText.innerText = "TAP ANYWHERE TO START";
-            loaderText.classList.add("blink");
-        }, 400);
+        // 1. Tahap Pertama: Spinner dan Teks awal menghilang (Fade Out)
+        spinner.style.opacity = "0";
+        loaderText.classList.add("hidden");
 
-        // 3. Pasang event listener di seluruh area loader
-        loader.addEventListener("click", function(){
-            music.play();
+        // 2. Tahap Kedua: Ganti konten saat tidak terlihat
+        setTimeout(() => {
+            spinner.style.display = "none"; // Hilangkan spinner dari layout
+            loaderText.innerText = "TAP ANYWHERE TO START";
+            
+            // 3. Tahap Ketiga: Munculkan teks baru (Fade In)
+            loaderText.classList.remove("hidden");
+            loaderText.classList.add("blink");
+        }, 600); // Jeda ini harus sedikit lebih lama dari durasi transition CSS
+
+        // 4. Tahap Terakhir: Tunggu interaksi user untuk masuk
+        loader.style.cursor = "pointer";
+        loader.addEventListener("click", function() {
+            music.play().catch(e => console.log("Audio play deferred"));
             hideLoader();
         }, { once: true });
     });
