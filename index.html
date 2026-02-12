@@ -156,6 +156,26 @@ html, body{
     color:#ff8fa3;
     font-weight:500;
     opacity:0.8;
+    transition: opacity 0.5s ease;
+}
+
+.fade-out{
+    opacity:0;
+    transition: opacity 0.5s ease;
+}
+
+.fade-in{
+    opacity:1;
+    transition: opacity 0.5s ease;
+}
+
+.pulse{
+    animation: pulseAnim 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseAnim{
+    0%,100%{ opacity:0.4; }
+    50%{ opacity:1; }
 }
 
 .spinner{
@@ -273,8 +293,8 @@ html, body{
 <div id="loader">
     <div class="loader-box">
         <img src="gift.png" alt="Loading">
-        <div class="spinner"></div>
-        <div class="loader-text">PREPARING YOUR SURPRISE</div>
+        <div class="spinner" id="spinner"></div>
+        <div class="loader-text" id="loaderText">PREPARING YOUR SURPRISE</div>
     </div>
 </div>
 
