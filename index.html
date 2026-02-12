@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Special Surprise!</title>
+
+<style>
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(135deg, #f5e1e1 30%, #FFB5C0 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Gift box */
+.gift-box {
+    text-align: center;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border: 3px dashed #ffC9D7;
+    animation: wiggle 2s infinite;
+}
+
+.gift-box:hover {
+    transform: scale(1.05);
+    background-color: #fffafa;
+}
+
+.gift-box h2 {
+    color: #ffC9D7;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-3deg); }
+    75% { transform: rotate(3deg); }
+}
+
+/* Overlay */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+/* Popup */
+.popup {
+    background: #FAE6E7;
+    padding: 40px;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.popup img {
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.popup button {
+    background: #FFB5C0;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    font-weight: bold;
+
+    outline: none; /* hilangkan outline biru */
+    -webkit-tap-highlight-color: transparent; /* hilangkan biru saat tap di mobile */
+}
+
+.popup button:focus {
+    outline: none; /* pastikan tidak muncul saat focus */
+}
+
+.popup button:active {
+    transform: scale(0.95); /* efek klik halus */
+}
+
+
+.popup button:hover {
+    transform: scale(1.05);
+    background-color: #f4c5c5;
+}
+
+@keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+#giftRainContainer{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:9999;
+}
+
+.falling-gift{
+    position:absolute;
+    top:-80px;
+    width:40px;
+    height:40px;
+    background-size:contain;
+    background-repeat:no-repeat;
+    animation:fall linear forwards;
+    will-change:transform;
+}
+
+/* Animasi lebih smooth & natural */
+@keyframes fall{
+    0%{
+        transform: translateY(0) translateX(0) rotate(0deg) scale(0.9);
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+        transform: scale(1);
+    }
+
+    25%{
+        transform: translateY(25vh) translateX(-25px) rotate(90deg);
+    }
+
+    50%{
+        transform: translateY(50vh) translateX(25px) rotate(180deg);
+    }
+
+    75%{
+        transform: translateY(75vh) translateX(-20px) rotate(270deg);
+    }
+
+    100%{
+        transform: translateY(110vh) translateX(15px) rotate(360deg);
+        opacity:0.9;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="bgMusic" autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Gift Box -->
+<div class="gift-box" onclick="showGift()">
+    <h2>Click me, there's a gift! 🎁</h2>
+</div>
+
+<!-- Popup -->
+<div class="overlay" id="overlay" onclick="closePopup()">
+    <div class="popup" onclick="event.stopPropagation()">
+        <img src="gift.png" alt="Gift Image">
+        <h3>Surprise! Haha. Well, this is awkward.</h3>
+        <button onclick="closePopup()">Close</button>
+    </div>
+</div>
+
+<!-- Sound effect -->
+<audio id="openSound">
+    <source src="open.mp3" type="audio/mpeg">
+</audio>
+  
+<div id="giftRainContainer"></div>
+
+<script>
+function startGiftRain(){
+
+    const container = document.getElementById("giftRainContainer");
+
+    for(let i=0;i<20;i++){
+
+        const gift = document.createElement("div");
+        gift.className = "falling-gift";
+
+        // GANTI FILE PNG DI SINI
+        gift.style.backgroundImage = 'url("gift.png")';
+
+        gift.style.left = Math.random() * 100 + "vw";
+
+        const size = Math.random() * 30 + 30;
+        gift.style.width = size + "px";
+        gift.style.height = size + "px";
+
+        const duration = Math.random() * 3 + 4;
+        gift.style.animationDuration = duration + "s";
+
+        gift.style.animationDelay = Math.random() * 0.5 + "s";
+
+        container.appendChild(gift);
+
+        setTimeout(()=>{
+            gift.remove();
+        }, (duration + 0.5) * 1000);
+    }
+}
+
+function showGift() {
+    document.getElementById('overlay').style.display = 'flex';
+    document.getElementById('openSound').play();
+    startGiftRain(); // sekarang pasti kebaca
+}
+
+function closePopup() {
+    document.getElementById('overlay').style.display = 'none';
+}
+</script>
+
+
+<script>
+function showGift() {
+    document.getElementById('overlay').style.display = 'flex';
+    document.getElementById('openSound').play();
+    startGiftRain();
+}
+
+function closePopup() {
+    document.getElementById('overlay').style.display = 'none';
+}
+
+/* Autoplay workaround for browser */
+window.addEventListener('click', function () {
+    document.getElementById('bgMusic').play();
+}, { once: true });
+</script>
+
+</body>
+</html>
