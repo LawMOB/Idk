@@ -63,8 +63,10 @@ body {
 /* Popup */
 .popup {
     background: #FAE6E7;
-    padding: 40px;
-    border-radius: 50px;
+    width: 85%;
+    max-width: 350px;
+    padding: 25px;
+    border-radius: 25px;
     text-align: center;
     box-shadow: 0 20px 30px rgba(0,0,0,0.1);
     animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -154,6 +156,18 @@ body {
         transform: translateY(110vh) translateX(15px) rotate(360deg);
         opacity:0.9;
     }
+
+    /* Responsive Mobile */
+@media (max-width: 480px){
+
+.gift-box{
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.gift-box h2{
+    font-size: 1rem;
+ }
 }
 
 </style>
