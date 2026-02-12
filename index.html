@@ -12,16 +12,21 @@ html, body{
     overflow:hidden;
     touch-action:none;
 }
-  
-body {
+ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    /* Gunakan dvh agar benar-benar di tengah layar HP */
+    height: 100vh; 
+    height: 100dvh; 
     margin: 0;
     background: linear-gradient(135deg, #f5e1e1 30%, #FFB5C0 100%);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overscroll-behavior: none;
+    
+    /* Pastikan tidak ada scroll yang mengganggu posisi */
+    overflow: hidden;
+    position: fixed; /* Opsional: Mengunci posisi body agar tidak goyang */
+    width: 100%;
 }
 
 *{
